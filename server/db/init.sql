@@ -8,9 +8,9 @@ DROP TABLE IF EXISTS LANDFILL_MANAGEMENT;
 DROP TABLE IF EXISTS STS_MANAGEMENT;
 DROP TABLE IF EXISTS STS;
 DROP TABLE IF EXISTS LANDFILL; 
-DROP TABLE IF EXISTS USER_PERMISSIONS;
-DROP TABLE IF EXISTS USER_PAGES;
-DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS PERMISSIONS;
+DROP TABLE IF EXISTS PAGES;
+DROP TABLE IF EXISTS PERSON;
 DROP TABLE IF EXISTS USER_ROLE; 
 
 CREATE TABLE demo_table (
@@ -25,31 +25,32 @@ CREATE TABLE USER_ROLE (
     role_name VARCHAR(50)
 );
 
-CREATE TABLE person (
+CREATE TABLE PERSON (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     username VARCHAR(100) NOT NULL,
     password TEXT NOT NULL,
     contact_no VARCHAR(20) NOT NULL,
-    full_name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+		last_name TEXT NOT NULL,
     role_id INT, 
     FOREIGN KEY (role_id) REFERENCES USER_ROLE(role_id)
 );
 
 
 
-CREATE TABLE USER_PAGES (
+CREATE TABLE PAGES (
     page_id SERIAL PRIMARY KEY,
     page_title TEXT NOT NULL,
     page_description TEXT
 );
 
-CREATE TABLE USER_PERMISSIONS(
+CREATE TABLE PERMISSIONS(
     permission_id SERIAL PRIMARY KEY,
     page_id INT,
-    user_id INT,
-    FOREIGN KEY (page_id) REFERENCES USER_PAGES(page_id),
-    FOREIGN KEY (user_id) REFERENCES person(id)
+    role_id INT,
+    FOREIGN KEY (page_id) REFERENCES PAGES(page_id),
+    FOREIGN KEY (role_id) REFERENCES USER_ROLE(role_id)
 );
 
 CREATE TABLE LANDFILL (
@@ -60,7 +61,7 @@ CREATE TABLE LANDFILL (
     landfill_capacity INT NOT NULL,
     operation_time INTERVAL NOT NULL,
     creator_id INT NOT NULL, 
-    FOREIGN KEY (creator_id) REFERENCES person(id)
+    FOREIGN KEY (creator_id) REFERENCES PERSON(id)
 );
 
 CREATE TABLE STS (
@@ -72,7 +73,7 @@ CREATE TABLE STS (
     ward_no INT,
     landfill_id INT NOT NULL, 
     creator_id INT NOT NULL, 
-    FOREIGN KEY (creator_id) REFERENCES person(id),
+    FOREIGN KEY (creator_id) REFERENCES PERSON(id),
     FOREIGN KEY (landfill_id) REFERENCES LANDFILL(landfill_id)
 );
 
@@ -83,8 +84,8 @@ CREATE TABLE STS_MANAGEMENT (
     manager_id INT NOT NULL, 
     admin_id INT NOT NULL,
     CONSTRAINT sts_unique_const UNIQUE(sts_id, manager_id, admin_id),
-    FOREIGN KEY (manager_id) REFERENCES person(id),
-    FOREIGN KEY (admin_id) REFERENCES person(id),
+    FOREIGN KEY (manager_id) REFERENCES PERSON(id),
+    FOREIGN KEY (admin_id) REFERENCES PERSON(id),
     FOREIGN KEY (sts_id) REFERENCES STS(sts_id)
 );
 
@@ -94,8 +95,8 @@ CREATE TABLE LANDFILL_MANAGEMENT (
     manager_id INT NOT NULL, 
     admin_id INT NOT NULL,
     CONSTRAINT landfill_unique_const UNIQUE(landfill_id, manager_id, admin_id),
-    FOREIGN KEY (manager_id) REFERENCES person(id),
-    FOREIGN KEY (admin_id) REFERENCES person(id),
+    FOREIGN KEY (manager_id) REFERENCES PERSON(id),
+    FOREIGN KEY (admin_id) REFERENCES PERSON(id),
     FOREIGN KEY (landfill_id) REFERENCES LANDFILL(landfill_id)
 );
 
@@ -124,7 +125,7 @@ CREATE TABLE STS_VEHICLE_ASSIGNMENT(
     registration_no TEXT NOT NULL,
     sts_id INT NOT NULL,
     assign_id INT NOT NULL, 
-    FOREIGN KEY (assign_id) REFERENCES person(id),
+    FOREIGN KEY (assign_id) REFERENCES PERSON(id),
     FOREIGN KEY (sts_id) REFERENCES STS(sts_id), 
     FOREIGN KEY (registration_no) REFERENCES VEHICLE(registration_no)
 );
@@ -139,7 +140,7 @@ CREATE TABLE STS_VEHICLE_ENTRY(
     weight_of_waste NUMERIC(10, 2) NOT NULL, 
     FOREIGN KEY (registration_no) REFERENCES VEHICLE(registration_no),
     FOREIGN KEY (sts_id) REFERENCES STS(sts_id),
-    FOREIGN KEY (manager_id) REFERENCES person(id)
+    FOREIGN KEY (manager_id) REFERENCES PERSON(id)
 );
 
 CREATE TABLE LANDFILL_VEHICLE_ENTRY(
@@ -152,7 +153,7 @@ CREATE TABLE LANDFILL_VEHICLE_ENTRY(
     weight_of_waste NUMERIC(10, 2) NOT NULL, 
     FOREIGN KEY (registration_no) REFERENCES VEHICLE(registration_no),
     FOREIGN KEY (landfill_id) REFERENCES LANDFILL(landfill_id),
-    FOREIGN KEY (manager_id) REFERENCES person(id)
+    FOREIGN KEY (manager_id) REFERENCES PERSON(id)
 );
 
 
@@ -160,6 +161,6 @@ CREATE TABLE LANDFILL_VEHICLE_ENTRY(
 INSERT INTO USER_ROLE(role_name) VALUES('System Admin');
 
 
-INSERT INTO person(id, username, email, password, contact_no, full_name, role_id) 
-Values(1, 'admin', 'admin@gmail.com', '$2b$10$K2uLTjOY1TG/IkFwn7dPXOrWSySMJxp/wi1j3Pj7UBNarsxqKOfIO', '1234567', 'Mohammad Raihan Rashid', 1);
+INSERT INTO PERSON(id, username, email, password, contact_no, first_name, last_name, role_id) 
+Values(1, 'admin', 'admin@gmail.com', '$2b$10$K2uLTjOY1TG/IkFwn7dPXOrWSySMJxp/wi1j3Pj7UBNarsxqKOfIO', '1234567', 'Mohammad Raihan','Rashid', 1);
 
