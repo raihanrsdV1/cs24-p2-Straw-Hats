@@ -31,11 +31,11 @@ CREATE TABLE person (
     username VARCHAR(100) NOT NULL,
     password TEXT NOT NULL,
     contact_no VARCHAR(20) NOT NULL,
-    full_name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     role_id INT, 
     FOREIGN KEY (role_id) REFERENCES USER_ROLE(role_id)
 );
-
 
 
 CREATE TABLE USER_PAGES (
