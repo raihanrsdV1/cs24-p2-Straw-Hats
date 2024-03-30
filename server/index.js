@@ -24,6 +24,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const adminRouter = require('./router/adminRouter')
 const indexRouter = require('./router/indexRouter')
+const profileRouter = require('./router/Users/profile')
 
 //const systemRoutes = require('./routes/systemRoutes');
 
@@ -84,8 +85,10 @@ app.use('/something', async(req, res, next) => {
     res.status(500).send('Server Error');
   }
 });
+
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
+app.use('/profile', profileRouter);
 
 
 

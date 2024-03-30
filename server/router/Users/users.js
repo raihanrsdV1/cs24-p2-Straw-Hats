@@ -9,7 +9,7 @@ router.get('/', authorization, async(req, res, next) => {
         const users = pool.query(`SELECT * FROM person P 
             JOIN USER_ROLE U ON P.role_id = U.role_id
         `);
-
+        
         res.json(users.rows);
 
     }
