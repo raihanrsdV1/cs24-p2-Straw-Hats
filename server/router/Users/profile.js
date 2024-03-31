@@ -37,11 +37,11 @@ router.get('/', async(req, res, next) => {
 router.put('/', async(req, res, next) => {
     try{
         console.log(req.body);
-        const {user_id, username, first_name, last_name, email, contact_no} = req.body;
-        const user = await pool.query(`UPDATE person SET username = $1, first_name = $2, last_name = $3, email = $4, contact_no = $5
-            WHERE id = $6
+        const {user_id, username, full_name, email, contact_no} = req.body;
+        const user = await pool.query(`UPDATE person SET username = $1, full_name = $2, email = $3, contact_no = $4
+            WHERE id = $5
             RETURNING *
-        `, [username, first_name, last_name, email, contact_no, user_id]);
+        `, [username, full_name, email, contact_no, user_id]);
 
         res.json(user.rows[0]);
     }
