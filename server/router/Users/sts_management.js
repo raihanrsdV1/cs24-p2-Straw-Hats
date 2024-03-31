@@ -1,0 +1,133 @@
+const express = require('express');
+const router = express.Router();
+const pool = require('../../db');
+const axios = require('axios'); // Import axios for making HTTP requests
+
+
+// Route Optimization View: View and select optimized routes from STS to landfill
+router.get('/route_optimization', async (req, res, next) => {
+    try {
+        // get the sts_id the request
+        const sts_id = req.body.sts_id;
+
+        // Get STS and landfill coordinates
+        const stsCoordinates = await pool.query(`
+            SELECT latitude, longitude FROM STS WHERE sts_id = $1
+        `, [sts_id]);
+        // get landfill coordinates with join
+        const landfillCoordinates = await pool.query(`
+            SELECT L.latitude, L.longitude FROM LANDFILL L
+            JOIN STS S ON L.landfill_id = S.landfill_id
+            WHERE sts_id = $1
+        `, [sts_id]);
+
+        // Calculate route using Google Maps Directions API
+        const response = await axios.get('https://maps.googleapis.com/maps/api/directions/json', {
+            params: {
+                origin: `${stsCoordinates.latitude},${stsCoordinates.longitude}`,
+                destination: `${landfillCoordinates.latitude},${landfillCoordinates.longitude}`,
+                key: 'YOUR_GOOGLE_MAPS_API_KEY',
+                // Add other parameters like traffic model, departure time, etc., as needed
+            }
+        });
+
+        // Extract route information from the response
+        const routes = response.data.routes;
+        const routeInfo = routes.map(route => ({
+            // Extract relevant route information here (e.g., distance, duration, steps)
+            distance: route.legs[0].distance.text,
+            duration: route.legs[0].duration.text,
+            steps: route.legs[0].steps
+        }));
+
+        // Calculate the total distance of each route
+        const totalDistances = routeInfo.map(route => parseFloat(route.distance.split(' ')[0])); // Assuming distance is in kilometers
+
+        // Find the index of the route with the shortest distance
+        const shortestDistanceIndex = totalDistances.indexOf(Math.min(...totalDistances));
+
+        // Get the shortest route and its distance
+        const shortestRoute = routeInfo[shortestDistanceIndex];
+        const shortestDistance = totalDistances[shortestDistanceIndex];
+
+        // Sort vehicles for optimal waste transportation (Replace with your sorting algorithm)
+        // For example, you can sort vehicles based on capacity and fuel efficiency
+        const sortedVehicles = []; // Implement your sorting logic here
+
+        // Send response to the client
+        res.json({
+            shortestRoute: shortestRoute,
+            shortestDistance: shortestDistance,
+            sortedVehicles: sortedVehicles
+        });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// Fleet Optimization View: Generate the fleet of trucks needed for the day
+router.get('/fleet_optimization', async (req, res, next) => {
+    try {
+        // Implement fleet optimization logic here
+        // Consider factors such as maximum number of trips per truck and minimum fuel consumption cost
+        // Return the optimized fleet of trucks to the client
+        res.send('Fleet optimization view');
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Existing routes for STS management
+// Add, delete, or modify existing routes as needed
+
+// Get all info of the STS
+router.get('/', async (req, res, next) => {
+    try {
+        // Retrieve STS info, vehicles, and connected landfill info
+        const sts_id = req.body.sts_id;
+        const sts = await pool.query(`
+            SELECT S.*, L.* FROM STS S
+            JOIN LANDFILL L ON S.landfill_id = L.landfill_id
+            WHERE sts_id = $1
+        `, [sts_id]);
+        const vehicles = await pool.query(`
+            SELECT V.* FROM VEHICLE V
+            JOIN STS_VEHICLE_ASSIGNMENT SV ON V.registration_no = SV.registration_no
+            WHERE sts_id = $1
+        `, [sts_id]);
+        res.json({
+            sts: sts.rows[0],
+            vehicles: vehicles.rows
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Add entry of vehicles leaving the STS
+router.post('/add_entry', async (req, res, next) => {
+    try {
+        // Insert vehicle entry into the database
+        const { registration_no, sts_id, manager_id, weight_of_waste, toa, tod } = req.body;
+        const entry = await pool.query(`
+            INSERT INTO STS_VEHICLE_ENTRY (registration_no, sts_id, manager_id, arrival_time, departure_time, weight_of_waste)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+        `, [registration_no, sts_id, manager_id, toa, tod, weight_of_waste]);
+        // Return all entries of the STS
+        const entries = await pool.query(`
+            SELECT * FROM STS_VEHICLE_ENTRY WHERE sts_id = $1
+        `, [sts_id]);
+        res.json(entries.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+module.exports = router;
