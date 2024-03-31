@@ -25,6 +25,8 @@ const router = express.Router();
 const adminRouter = require('./router/adminRouter')
 const indexRouter = require('./router/indexRouter')
 const profileRouter = require('./router/Users/profile')
+const sts_managementRouter = require('./router/Users/sts_management')
+const lf_managementRouter = require('./router/Users/lf_management')
 
 //const systemRoutes = require('./routes/systemRoutes');
 
@@ -89,6 +91,8 @@ app.use('/something', async(req, res, next) => {
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/profile', profileRouter);
+app.use('/sts_management', sts_managementRouter);
+app.use('/lf_management', lf_managementRouter);
 
 
 

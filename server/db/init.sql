@@ -70,7 +70,7 @@ CREATE TABLE STS (
     latitude DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL,
     address TEXT,
-    ward_no INT,
+    ward_no INT NOT NULL,
     landfill_id INT NOT NULL, 
     creator_id INT NOT NULL, 
     FOREIGN KEY (creator_id) REFERENCES PERSON(id),
