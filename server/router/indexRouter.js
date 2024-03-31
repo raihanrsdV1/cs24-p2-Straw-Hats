@@ -13,6 +13,20 @@ router.get('/', function(req, res, next) {
 
 router.use('/auth', require('./Authorization/login'))
 
-router.use('/users', require('./Users/users'))
+router.get('/users/roles', authorization, async(req, res, next) => {
+  try{
+      const roles = await pool.query(`SELECT * FROM "user_role"`);
+      res.json(roles.rows);
+  }
+  catch(err){
+      console.error(err.message);
+  }
+})
+
+router.use('/users', require('./Users/users'));
+
+router.use('/rbac/roles', require('./Roles/roles'))
+
+
 
 module.exports = router;

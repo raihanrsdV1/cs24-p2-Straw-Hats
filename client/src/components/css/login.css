@@ -59,3 +59,48 @@ body{
         padding: 20px;
      }
 }
+
+
+
+.tracker-page-overlay {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-image: url('../../image/star1.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .tracker-page-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 700px;
+    min-height: 300px;
+    transform: translate(-50%, -50%);
+    text-align: center; /* If you want to center text within the container */
+    background-color: white; /* Add a background color for better visibility */
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.4);
+    padding: 20px; /* Add padding to the container */
+    border-radius: 15px; /* Optional: Add rounded corners */
+  }
+
+  .progress-bar-div{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+  }
+
+
+  .reset-inner-div{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+  }
