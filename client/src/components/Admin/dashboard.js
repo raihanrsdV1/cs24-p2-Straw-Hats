@@ -7,6 +7,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import "./admin.css"
 import UserImg from "../../image/user.png";
 
+import Users from './users';
+import Sts from './sts';
+import Landfill from './landfill';
+import Analytics from './Analytics';
+import AddUser from './AddUser';
+import ChangePassword from './ChangePassword';
+import Roles from './Roles';
+
 
 
 const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
@@ -51,10 +59,16 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
                                 Analytics
                             </button>
                             <button className='bar-buttons' onClick={() => changePageState(2)}>
-                                Admin Info
+                                Users
                             </button>
                             <button className='bar-buttons' onClick={() => changePageState(3)}>
+                                Add User
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(4)}>
                                 Change Password
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(5)}>
+                                Roles
                             </button>
                             <button className='bar-buttons' onClick={() => logOut()}>
                                 Log Out
@@ -68,7 +82,12 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
                 <div className='content-div'>
                     {
                         isAdmin && (
-                            <h1>Admin show</h1>
+                            pageState === 1 && <Analytics /> ||
+                            pageState === 2 && <Users /> ||
+                            pageState === 3 && <AddUser setAuth={setAuth} setIsAdmin={setIsAdmin}  /> ||
+                            pageState === 4 && <ChangePassword /> ||
+                            pageState === 5 && <Roles />
+
                             
                         )
                     }

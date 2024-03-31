@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,23 +8,31 @@ import logo from "../../image/login.png";
 import bg from "../../image/bg.png";
 import googleLogo from "../../image/google.png";
 
-const Login = ({setAuth, setIsAdmin}) => {
+import ReCAPTCHA from 'react-google-recaptcha';
 
-    const [inputs, setInputs] = useState({
-        email: "",
-        password: ""
-    });
+const Login = ({setAuth, setIsAdmin, setPageState, inputs, setInputs}) => {
 
+    
+
+    const [verified, setVerified] = useState(false);
     const {email, password} = inputs;
-
+    const [token, setToken] = useState("");
+    const [recaptchaRef, setRecaptchaRef] = useState(null);
     const onChange = e => {
         setInputs({...inputs, [e.target.name]: e.target.value});
+    }
+
+
+    const captchOnChange = (value) => {
+        setToken(value);
+        setVerified(true);
     }
 
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
-            const body = {email, password};
+
+            const body = {email, password, token};
             const response = await fetch(`http://localhost:8000/auth/login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -45,6 +53,9 @@ const Login = ({setAuth, setIsAdmin}) => {
                 setAuth(false);
                 console.log(parseRes);
                 toast.error(parseRes);
+                if (recaptchaRef) {
+                    recaptchaRef.reset(); // Reset ReCAPTCHA
+                }
             }
 
             
@@ -88,24 +99,27 @@ const Login = ({setAuth, setIsAdmin}) => {
                     <div class="input-group mb-1">
                         <input type="password" name="password" placeholder="Password" className="form-control form-control-lg bg-color fs-6" value={password} onChange={e => onChange(e)} />
                     </div>
-                    <div class="input-group mb-5 d-flex justify-content-between">
+                    <div class="input-group mb-4 d-flex justify-content-between">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="formCheck"/>
                             <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
                         </div>
                         <div class="forgot">
-                            <small><a href="#">Forgot Password?</a></small>
+                            <small><a href="#" onClick={() => setPageState('resetPassword')}>Forgot Password?</a></small>
                         </div>
                     </div>
-                    <div class="input-group mb-3">
-                        <button class="btn btn-lg btn-primary w-100 h-100 fs-6" onClick={onSubmitForm}>Login</button>
+                    <ReCAPTCHA
+                        sitekey="6Leh1KkpAAAAAO7l9gp7Dj66jLDyeydI_NJT7MoX"
+                        onChange={captchOnChange}
+                        ref={(ref) => setRecaptchaRef(ref)}
+                    />
+                    <div class="input-group mb-3 mt-4">
+                        <button class="btn btn-lg btn-primary w-100 h-100 fs-6" onClick={onSubmitForm} disabled={!verified}>Login</button>
                     </div>
                     <div class="input-group mb-3">
                         <button class="btn btn-lg btn-light w-100 h-100 fs-6"><img src={googleLogo} style={{ width: '20px' }} className="me-2"/><small>Sign In with Google</small></button>
                     </div>
-                    <div class="row">
-                        <small>Don't have account? <Link to="/register">Register here</Link>.</small>
-                    </div>
+                    
                 </div>
             </div> 
 

@@ -5,3 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import "./admin.css"
 
+
+const Landfill = () => {
+    return (
+        <Fragment>
+            <h1>Landfill</h1>
+        </Fragment>
+    )
+}
+
+export default Landfill;
