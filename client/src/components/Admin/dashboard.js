@@ -17,7 +17,7 @@ import Roles from './Roles';
 import GoogleMap from './GoogleMap';
 import VehicleType from './VehicleType';
 import Vehicles from './Vehicles';
-
+import OptimizedRoute from '../demo/demo';
 
 
 const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager, isLandfillManager, setIsLandfillManager }) =>{
@@ -185,8 +185,8 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                         ) ||
                         isStsManager && (
                             pageState === 1 && <ChangePassword /> ||
-                            pageState === 2 && <Sts /> 
-                            
+                            pageState === 2 && <Sts /> ||
+                            pageState === 3 && <OptimizedRoute />
                         )
                         ||
                         isLandfillManager && (

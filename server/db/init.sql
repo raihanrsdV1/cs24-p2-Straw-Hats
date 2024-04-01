@@ -133,7 +133,7 @@ CREATE TABLE VEHICLE_ENTRY (
     id SERIAL PRIMARY KEY,
     registration_no TEXT NOT NULL,
     location_id INT NOT NULL, 
-    manager_id INT NOT NULL, 
+    manager_id INT, 
     arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     departure_time TIMESTAMP, 
     weight_of_waste NUMERIC(10, 2) DEFAULT 0.00, 

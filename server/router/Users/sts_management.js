@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../../db');
 const axios = require('axios'); // Import axios for making HTTP requests
+const authorization = require('../../middlewares/authorization');
 
 // a function that takes in the sts_id and returns the optimized route distance and time
 async function getOptimizedRoute(sts_id) {
@@ -30,6 +31,7 @@ async function getOptimizedRoute(sts_id) {
     const route = response.data.routes[0].legs[0];
     const distance = route.distance.value/1000;
     const duration = route.duration.value/60;
+    console.log(distance, duration);
     return { distance, duration };
 }
 
@@ -43,7 +45,15 @@ router.get('/route_optimization', async (req, res, next) => {
             sts_id = 1; // Default STS ID
         }
 
-        console.log(sts_id);
+        // console.log(req.user);
+
+        // //fetch the sts_id from the user
+        // const sts_id_query = `
+        //     SELECT sts_id FROM STS_MANAGEMENT WHERE manager_id = $1
+        // `;
+        // const sts_id_result = await pool.query(sts_id_query, [req.user]);
+        // sts_id = sts_id_result.rows[0].sts_id;
+        // console.log(sts_id);
 
         // Get STS and landfill coordinates
         const stsCoordinates = await pool.query(`
