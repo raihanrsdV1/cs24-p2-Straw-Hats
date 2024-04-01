@@ -8,6 +8,7 @@ import './App.css';
 
 import Login from './components/Authentication/Login';
 import Dashboard from './components/User/dashboard';
+import DEMO from './components/demo/demo';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,6 +56,7 @@ function App() {
         <Routes>
           <Route exact path="/login" element={!isAuthenticated?  <Login setAuth={setAuth} setIsAdmin={setIsAdmin} /> : <Navigate to ="/" />} />
           <Route exact path="/" element={isAuthenticated?  <Dashboard isAuthenticated={isAuthenticated} setAuth={setAuth} setIsAdmin={setIsAdmin} isAdmin={isAdmin} /> : <Navigate to ="/login" />} />
+          <Route exact path="/demo" element={<DEMO />} />
         </Routes>
       </Router>
     </Fragment>
