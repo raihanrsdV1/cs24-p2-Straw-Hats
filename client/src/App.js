@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 import Dashboard from './components/Admin/dashboard';
+
 import DEMO from './components/demo/demo';
 import Login from './components/Authentication/LoginUi';
 import Landfill from './components/Pages/landfill';
