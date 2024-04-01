@@ -25,7 +25,15 @@ router.get('/users/roles', authorization, async(req, res, next) => {
 
 router.use('/users', require('./Users/users'));
 
-router.use('/rbac/roles', require('./Roles/roles'))
+router.use('/rbac/roles', require('./Roles/roles'));
+
+router.use('/landfill', require('./Landfill/landfill'));
+
+router.use('/sts', require('./Landfill/sts'));
+
+router.use('/vehicle', require('./Landfill/vehicle'));
+
+router.use('/vehicleType', require('./Landfill/vehicleType'));
 
 
 
