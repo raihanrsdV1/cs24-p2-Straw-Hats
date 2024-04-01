@@ -20,7 +20,7 @@ import Vehicles from './Vehicles';
 
 
 
-const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
+const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager, isLandfillManager, setIsLandfillManager }) =>{
     const [user, setUser] = useState({});
     const [pageState, setPageState] = useState(1);
     const navigate = useNavigate();
@@ -31,21 +31,28 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
         setPageState(state);
     }
 
+    
+
     useEffect(()=>{
         console.log('admin updated');
-    }, [isAdmin])
+        console.log('isStsManager', isStsManager);
+        console.log('isAdmin', isAdmin);
+        console.log('isLandfillManager', isLandfillManager);
+    }, [isAdmin, isStsManager, isLandfillManager])
 
     const logOut = async() =>{
         localStorage.removeItem("token");
         setAuth(false);
         setIsAdmin(false);
+        setIsStsManager(false);
+        setIsLandfillManager(false);
     }
 
 
 
 
     return (
-        <Fragment  key={isAdmin.toString()}>
+        <Fragment >
             <div className='main-div'>
                 <div className='bar-div'>
                     <div className='overlay'></div>
@@ -96,6 +103,67 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
                             </div>
                             </Fragment>
 
+                        ) || 
+                        isStsManager && (
+                            <Fragment>
+                            <div className='bar-content-div'>
+                            <h2 className='dashboard-heading'>Admin Dashboard</h2>
+                            <hr className='bar-div-hr'></hr>
+                            
+                            <img src={UserImg} className='profile-img' />
+                            
+                            <h2 className='profile-heading'>{user.username}</h2>
+                            <hr className='bar-div-hr'></hr>
+                            
+                            <button className='bar-buttons' onClick={() => changePageState(1)}>
+                                Change Password
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(2)}>
+                                STS
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(3)}>
+                                Optimized Route
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(4)}>
+                                Optimized Fleet
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(5)}>
+                                Vehicle Entry
+                            </button>
+                            <button className='bar-buttons' onClick={() => logOut()}>
+                                Log Out
+                            </button>
+                            </div>
+                            </Fragment>
+                        ) ||
+                        isLandfillManager && (
+                            <Fragment>
+                                <div className='bar-content-div'>
+                            <h2 className='dashboard-heading'>Admin Dashboard</h2>
+                            <hr className='bar-div-hr'></hr>
+                            
+                            <img src={UserImg} className='profile-img' />
+                            
+                            <h2 className='profile-heading'>{user.username}</h2>
+                            <hr className='bar-div-hr'></hr>
+                            
+                            <button className='bar-buttons' onClick={() => changePageState(1)}>
+                                Change Password
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(2)}>
+                                Landfill
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(3)}>
+                                Billing
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(5)}>
+                                Vehicle Entry
+                            </button>
+                            <button className='bar-buttons' onClick={() => logOut()}>
+                                Log Out
+                            </button>
+                            </div>
+                            </Fragment>
                         )
                     }
                 </div>

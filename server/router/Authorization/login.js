@@ -64,13 +64,18 @@ router.post('/login', validInfo, async (req, res) => {
         // console.log(user.rows);
         // 4. give them the jwt token
 
+
         const token = jwtGenerator(user.rows[0].id);
+
+        const user_role = await pool.query('SELECT * FROM user_role WHERE role_id = $1', [user.rows[0].role_id]);
         // console.log(token);
+        
         res.json({
             token : token,
             message: "Login Successful",
-            isAdmin: user.staff_status === 'admin' ? true : false,
-            isDeliveryMan: user.staff_status === 'delivery_man' ? true : false,
+            isAdmin: (user_role.rows && user_role.rows[0].role_name === 'System Admin') ? true : false,
+            isStsManager: (user_role.rows && user_role.rows[0].role_name === 'STS Manager')  ? true : false,
+            isLandfillManager: (user_role.rows && user_role.rows[0].role_name === 'Landfill Manager')? true : false,
         });
 
     }
@@ -85,9 +90,12 @@ router.get('/is-verify', authorization, async (req, res) => {
     try{
         // if it passes authorization than it is valid
         const user = await pool.query('SELECT * FROM person WHERE id = $1', [req.user]);
-
+        const user_role = await pool.query('SELECT * FROM user_role WHERE role_id = $1', [user.rows[0].role_id]);
         res.json({
             verified: true,
+            isAdmin: (user_role.rows && user_role.rows[0].role_name === 'System Admin') ? true : false,
+            isStsManager: (user_role.rows && user_role.rows[0].role_name === 'STS Manager')  ? true : false,
+            isLandfillManager: (user_role.rows && user_role.rows[0].role_name === 'Landfill Manager')? true : false,
         });
         // console.log(req.user);
     }

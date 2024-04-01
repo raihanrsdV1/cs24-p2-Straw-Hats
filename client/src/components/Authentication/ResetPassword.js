@@ -87,6 +87,10 @@ const Tracker = ({setPageState, inputs}) => {
             toast.error("Please enter your password");
             return;
         }
+        if(password.length < 6){
+            toast.error("Password must be a minimum of 6 letters");
+            return;
+        }
         if(password !== confirmedPassword){
             toast.error("Passwords do not match");
             return;

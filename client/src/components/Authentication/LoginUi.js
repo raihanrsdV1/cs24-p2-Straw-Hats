@@ -9,7 +9,7 @@ import Login from './Login';
 import ResetPassword from './ResetPassword';
 
 
-const LoginUi = ({setAuth, setIsAdmin}) => {
+const LoginUi = ({setAuth, setIsAdmin, setIsStsManager, setIsLandfillManager}) => {
     const [pageState, setPageState] = useState("login");
     const [inputs, setInputs] = useState({
         email: "",
@@ -18,7 +18,7 @@ const LoginUi = ({setAuth, setIsAdmin}) => {
     return (
         <Fragment>
             {
-                pageState === "login" && <Login setAuth={setAuth} setIsAdmin={setIsAdmin} setPageState={setPageState} inputs={inputs} setInputs={setInputs} /> ||
+                pageState === "login" && <Login setAuth={setAuth} setIsAdmin={setIsAdmin} setPageState={setPageState} setIsStsManager={setIsStsManager} setIsLandfillManager={setIsLandfillManager} inputs={inputs} setInputs={setInputs} /> ||
                 pageState === "resetPassword" && <ResetPassword setPageState={setPageState} inputs={inputs} />
 
             }
