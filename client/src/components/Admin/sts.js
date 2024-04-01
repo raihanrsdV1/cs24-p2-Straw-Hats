@@ -5,3 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import "./admin.css"
 
+
+
+const Sts = () => {
+    return (
+        <Fragment>
+            <h1>STS</h1>
+        </Fragment>
+    )
+}
+
+export default Sts;
+

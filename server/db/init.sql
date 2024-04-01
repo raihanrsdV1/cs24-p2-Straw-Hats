@@ -44,6 +44,7 @@ CREATE TABLE PERMISSIONS (
     page_id INT,
     role_id INT,
     FOREIGN KEY (page_id) REFERENCES PAGES(page_id),
+
     FOREIGN KEY (role_id) REFERENCES USER_ROLE(role_id)
 );
 
