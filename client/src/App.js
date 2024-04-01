@@ -6,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 
-import Login from './components/Authentication/Login';
-import Dashboard from './components/User/dashboard';
+//import Login from './components/Authentication/Login';
+//import Dashboard from './components/User/dashboard';
 import DEMO from './components/demo/demo';
 import Login from './components/Authentication/LoginUi';
 import Dashboard from './components/Admin/dashboard';
