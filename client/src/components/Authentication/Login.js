@@ -10,7 +10,7 @@ import googleLogo from "../../image/google.png";
 
 import ReCAPTCHA from 'react-google-recaptcha';
 
-const Login = ({setAuth, setIsAdmin, setPageState, inputs, setInputs}) => {
+const Login = ({setAuth, setIsAdmin, setPageState, inputs, setInputs, setIsStsManager, setIsLandfillManager}) => {
 
     
 
@@ -44,7 +44,9 @@ const Login = ({setAuth, setIsAdmin, setPageState, inputs, setInputs}) => {
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token);
                 setAuth(true);
-                setIsAdmin(true);
+                setIsAdmin(parseRes.isAdmin);
+                setIsStsManager(parseRes.isStsManager);
+                setIsLandfillManager(parseRes.isLandfillManager);
                 // console.log("Login Successfully")
                 
                 toast.success("Logged in Successfully");
