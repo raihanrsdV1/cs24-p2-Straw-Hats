@@ -18,11 +18,14 @@ import GoogleMap from './GoogleMap';
 import VehicleType from './VehicleType';
 import Vehicles from './Vehicles';
 import OptimizedRoute from '../demo/demo';
+import VehicleEntrySTS from './VehicleEntrySTS';
+
+
 
 
 const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager, isLandfillManager, setIsLandfillManager }) =>{
     const [user, setUser] = useState({});
-    const [pageState, setPageState] = useState(1);
+    const [pageState, setPageState] = useState(2);
     const navigate = useNavigate();
 
 
@@ -170,7 +173,7 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                 <div className='content-div'>
                     {
                         isAdmin && (
-                            pageState === 1 && <Analytics /> ||
+                            
                             pageState === 2 && <Users /> ||
                             pageState === 3 && <AddUser setAuth={setAuth} setIsAdmin={setIsAdmin}  /> ||
                             pageState === 4 && <ChangePassword /> ||
@@ -187,11 +190,14 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                             pageState === 1 && <ChangePassword /> ||
                             pageState === 2 && <Sts /> ||
                             pageState === 3 && <OptimizedRoute />
+                            pageState === 5 && <VehicleEntrySTS />
+                            
                         )
                         ||
                         isLandfillManager && (
                             pageState === 1 && <ChangePassword /> ||
-                            pageState === 2 && <Landfill />
+                            pageState === 2 && <Landfill /> ||
+                            pageState === 5 && <VehicleEntrySTS />
                         )
                     }
 

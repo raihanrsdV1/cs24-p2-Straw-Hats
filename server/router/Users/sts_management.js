@@ -133,10 +133,15 @@ router.get('/fleet_optimization', async (req, res, next) => {
 // Add, delete, or modify existing routes as needed
 
 // Get all info of the STS
-router.get('/', async (req, res, next) => {
+router.get('/',authorization, async (req, res, next) => {
     try {
         // Retrieve STS info, vehicles, and connected landfill info
-        const sts_id = req.body.sts_id;
+        const mid = req.user;
+        
+        const sts = await pool.query(`
+            SELECT sts_id from STS_management WHERE manager_id = $1
+        `, [mid])
+        const sts_id = sts.rows[0].sts_id;
 
         // Query to fetch STS info and connected landfill info
         const sts_query = `
@@ -214,9 +219,10 @@ router.post('/add_waste', async (req, res, next) => {
 
 
 // Add entry of vehicles leaving the STS
-router.post('/depart', async (req, res, next) => {
+router.post('/depart',authorization, async (req, res, next) => {
     try {
-        const { registration_no, sts_id, weight_of_waste, manager_id} = req.body;
+        const manager_id = req.user;
+        const { registration_no, sts_id, weight_of_waste } = req.body;
         // simply update the departure time of the vehicle entry also update the weight of waste also from the route_optimization function get the distance and time also update manager_id
         const departure_time = new Date();
         const route_info = await getOptimizedRoute(sts_id);
@@ -245,9 +251,10 @@ router.post('/depart', async (req, res, next) => {
 
 
 // Add entry of vehicles arriving at the STS
-router.post('/arrive', async (req, res, next) => {
+router.post('/arrive', authorization, async (req, res, next) => {
     try {
-        const { registration_no, sts_id, manager_id } = req.body;
+        const manager_id = req.user;
+        const { registration_no, sts_id } = req.body;
         // simply insert the vehicle entry with arrival time and weight of waste and manager_id
         const arrival_time = new Date();
         const entry = await pool.query(`

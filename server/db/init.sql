@@ -136,7 +136,9 @@ CREATE TABLE VEHICLE_ENTRY (
     manager_id INT, 
     arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     departure_time TIMESTAMP, 
+
     weight_of_waste NUMERIC(10, 2) DEFAULT 0.00, 
+
     estimated_distance NUMERIC(10, 2),
     estimated_duration NUMERIC(10, 2),
     arrived_at TEXT NOT NULL CHECK (arrived_at IN ('STS', 'Landfill')),

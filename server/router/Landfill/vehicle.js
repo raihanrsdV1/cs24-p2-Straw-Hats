@@ -51,6 +51,11 @@ router.post('/', authorization, async(req, res, next) => {
         `, [registration_no, type_id, model]);
 
         await pool.query(`
+            INSERT INTO VEHICLE_ENTRY(registration_no, location_id, arrived_at)
+            VALUES ($1, $2, 'STS')
+        `, [registration_no, sts_id]);
+
+        await pool.query(`
             INSERT INTO STS_VEHICLE_ASSIGNMENT (sts_id, registration_no, assign_id)
             VALUES ($1, $2, $3)
         `, [sts_id, registration_no, assign_id]);
