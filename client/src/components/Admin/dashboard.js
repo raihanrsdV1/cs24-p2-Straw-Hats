@@ -107,7 +107,7 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                         isStsManager && (
                             <Fragment>
                             <div className='bar-content-div'>
-                            <h2 className='dashboard-heading'>Admin Dashboard</h2>
+                            <h2 className='dashboard-heading'>STS Manager Dashboard</h2>
                             <hr className='bar-div-hr'></hr>
                             
                             <img src={UserImg} className='profile-img' />
@@ -139,7 +139,7 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                         isLandfillManager && (
                             <Fragment>
                                 <div className='bar-content-div'>
-                            <h2 className='dashboard-heading'>Admin Dashboard</h2>
+                            <h2 className='dashboard-heading'>Landfill Manager Dashboard</h2>
                             <hr className='bar-div-hr'></hr>
                             
                             <img src={UserImg} className='profile-img' />
@@ -182,6 +182,16 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin, isStsManager, setIsStsManager
                             pageState === 10 && <Vehicles />
 
                             
+                        ) ||
+                        isStsManager && (
+                            pageState === 1 && <ChangePassword /> ||
+                            pageState === 2 && <Sts /> 
+                            
+                        )
+                        ||
+                        isLandfillManager && (
+                            pageState === 1 && <ChangePassword /> ||
+                            pageState === 2 && <Landfill />
                         )
                     }
 
