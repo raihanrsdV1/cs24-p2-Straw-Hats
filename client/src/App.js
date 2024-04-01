@@ -11,6 +11,8 @@ import Dashboard from './components/User/dashboard';
 import DEMO from './components/demo/demo';
 import Login from './components/Authentication/LoginUi';
 import Dashboard from './components/Admin/dashboard';
+import Landfill from './components/Pages/landfill';
+import STS from './components/Pages/sts';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,6 +60,8 @@ function App() {
         <Routes>
           <Route exact path="/login" element={!isAuthenticated?  <Login setAuth={setAuth} setIsAdmin={setIsAdmin} /> : <Navigate to ="/" />} />
           <Route exact path="/" element={isAuthenticated?  <Dashboard isAuthenticated={isAuthenticated} setAuth={setAuth} setIsAdmin={setIsAdmin} isAdmin={isAdmin} /> : <Navigate to ="/login" />} />
+          <Route exact path="/landfill/:landfill_id" element={isAuthenticated?  <Landfill isAuthenticated={isAuthenticated} setAuth={setAuth} setIsAdmin={setIsAdmin} isAdmin={isAdmin} /> : <Navigate to ="/login" />} />
+          <Route exact path="/sts/:sts_id" element={isAuthenticated?  <STS isAuthenticated={isAuthenticated} setAuth={setAuth} setIsAdmin={setIsAdmin} isAdmin={isAdmin} /> : <Navigate to ="/login" />} />
           <Route exact path="/demo" element={<DEMO />} />
         </Routes>
       </Router>

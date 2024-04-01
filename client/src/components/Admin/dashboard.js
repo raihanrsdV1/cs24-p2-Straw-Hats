@@ -14,6 +14,9 @@ import Analytics from './Analytics';
 import AddUser from './AddUser';
 import ChangePassword from './ChangePassword';
 import Roles from './Roles';
+import GoogleMap from './GoogleMap';
+import VehicleType from './VehicleType';
+import Vehicles from './Vehicles';
 
 
 
@@ -37,6 +40,8 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
         setAuth(false);
         setIsAdmin(false);
     }
+
+
 
 
     return (
@@ -70,6 +75,21 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
                             <button className='bar-buttons' onClick={() => changePageState(5)}>
                                 Roles
                             </button>
+                            <button className='bar-buttons' onClick={() => changePageState(6)}>
+                                Map
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(7)}>
+                                Landfill
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(8)}>
+                                STS
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(9)}>
+                                Vehicle Type
+                            </button>
+                            <button className='bar-buttons' onClick={() => changePageState(10)}>
+                                Vehicle 
+                            </button>
                             <button className='bar-buttons' onClick={() => logOut()}>
                                 Log Out
                             </button>
@@ -86,7 +106,12 @@ const Dashboard = ({ setAuth, setIsAdmin, isAdmin }) =>{
                             pageState === 2 && <Users /> ||
                             pageState === 3 && <AddUser setAuth={setAuth} setIsAdmin={setIsAdmin}  /> ||
                             pageState === 4 && <ChangePassword /> ||
-                            pageState === 5 && <Roles />
+                            pageState === 5 && <Roles /> ||
+                            pageState === 6 && <GoogleMap /> ||
+                            pageState === 7 && <Landfill /> ||
+                            pageState === 8 && <Sts /> ||
+                            pageState === 9 && <VehicleType /> ||
+                            pageState === 10 && <Vehicles />
 
                             
                         )

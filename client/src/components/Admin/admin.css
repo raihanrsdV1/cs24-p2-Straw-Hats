@@ -99,6 +99,7 @@
 .order-table {
     border-collapse: collapse;
     width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
   }
   
   .order-table th, .order-table td {
@@ -387,3 +388,65 @@
     align-items: center;
     
   }
+
+
+  .landfill-main-div{
+    width: 100%;
+    height: 100vh;
+    background-image: url(../../image/landfill.jpg);
+    background-size:cover;
+    background-position: center;
+    overflow: scroll;
+    position: fixed;
+  }
+
+  .landfill-div-1{
+    width: 100%;
+    
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    padding: 10px;
+    padding-top: 50px;
+  }
+
+  .landfill-info{
+    background-color: rgba(255, 255, 255, 1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    font-size: 20px;
+  }
+
+  .landfill-info p{
+    width: 100%;
+    font-weight: 450;
+  }
+
+  .landfill-info b{
+    margin-right: 10px;
+  }
+
+
+  .landfill-managers{
+    width: 49%;
+    height: 100%;
+    text-align: center;
+    overflow: scroll;
+    background-color: transparent;
+  }
+
+  .landfill-managers h1{
+    color: white;
+
+  }
+
+  .landfill-vehicle-log{
+    width: 40%;
+    height: 400px;
+    overflow: scroll;
+    background-color: transparent;
+  }
+
+  
