@@ -92,8 +92,8 @@ router.get('/vehicle_logs/:id', authorization, async(req, res, next) => {
     try{
         const { id } = req.params;
         const logs = await pool.query(`
-            SELECT *, (SELECT username FROM person WHERE ID = LVE.manager_id) as username FROM LANDFILL_VEHICLE_ENTRY LVE
-            WHERE landfill_id = $1;
+            SELECT *, (SELECT username FROM person WHERE ID = VE.manager_id) as username FROM VEHICLE_ENTRY VE
+            WHERE location_id = $1 AND arrived_at = 'Landfill';
         `, [id])
         res.json(logs.rows);
     }
